@@ -13,8 +13,7 @@ python3 main.py
 ```
 ### Game Images
 <p align="center">
-  <img src="./assets/img1.png" width="80%" title="blackjack image">
+  <img src="./assets/img1.png" width="40%" title="blackjack image">
+  <img src="./assets/img3.png" width="40%" title="blackjack image">
 </p>
-<p align="center">
-  <img src="./assets/img3.png" width="80%" title="blackjack image">
-</p>
+
