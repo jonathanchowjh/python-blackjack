@@ -19,10 +19,27 @@ class Player:
     self.points = 0
     self.active_buttons = []
 
-  def get_initial_cards(self, deck: Deck):
+  def get_initial_cards(self, deck: Deck, dealer):
+    # DRAW 2
     draw = deck.draw(2)
     for card in draw:
       self.cards.append(card)
+    # CHECK BLACKJACK
+    if self.player == 0:
+      return
+    dealer_total = Player.get_card_total(dealer.cards)
+    player_total = Player.get_card_total(self.cards)
+    if player_total == 21 and dealer_total != 21:
+      won_points = self.bet_amount * 1.5
+      self.points += won_points
+      self.bet_amount = 0
+      self.player_state = 'ACE'
+      dealer.points -= won_points
+      return
+    if player_total == 21 and dealer_total == 21:
+      self.bet_amount = 0
+      self.player_state = 'DRAW'
+      return
   
   def draw_single(self, deck: Deck):
     draw = deck.draw(1)
@@ -113,6 +130,7 @@ class Player:
     dealer.points -= won_points
 
   def stay(self):
+    self.player_state = 'STAY'
     pass
 
   def do_game_end(self, dealer, deck):
@@ -128,12 +146,6 @@ class Player:
   def check_win_condition(self, dealer, state):
     player_total = Player.get_card_total(self.cards)
     dealer_total = Player.get_card_total(dealer)
-    if player_total == 21:
-      won_points = self.bet_amount * 1.5
-      self.points += won_points
-      self.bet_amount = 0
-      self.player_state = 'ACE'
-      return won_points
     if player_total > 21:
       won_points = -self.bet_amount
       self.points += won_points

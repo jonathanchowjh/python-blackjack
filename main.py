@@ -122,8 +122,9 @@ class App:
       return
 
   def deal(self):
+    dealer = App.first(x for x in self.players if x.player == 0)
     for player in self.players:
-      player.get_initial_cards(self.deck)
+      player.get_initial_cards(self.deck, dealer)
 
   def end(self):
     dealer = App.first(x for x in self.players if x.player == 0)
