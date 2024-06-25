@@ -125,7 +125,7 @@ class App:
   def end(self):
     dealer = App.first(x for x in self.players if x.player == 0)
     for player in self.players:
-      player.do_game_end(dealer)
+      player.do_game_end(dealer, self.deck)
     dealer.add_button('new game', 'next_game')
     pass
 

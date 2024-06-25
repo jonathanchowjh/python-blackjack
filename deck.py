@@ -33,7 +33,6 @@ class Deck:
   def draw(self, number):
     cards = []
     for i in range(number):
-      print(self.deck)
       if len(self.deck) <= 15:
         random.shuffle(self.deck)
       card = self.deck.pop()

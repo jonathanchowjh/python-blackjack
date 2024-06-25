@@ -23,12 +23,17 @@ class Player:
     draw = deck.draw(2)
     for card in draw:
       self.cards.append(card)
+  
+  def draw_single(self, deck: Deck):
+    draw = deck.draw(1)
+    for card in draw:
+      self.cards.append(card)
 
   def draw_player(self, deck: Deck, screen: pygame.Surface, game_state: str):
     # DRAW CARDS
-    draw_list = self.cards
-    if (self.player == 0 and game_state != 'END'):
-      draw_list = ['H'] * len(self.cards)
+    draw_list = self.cards.copy()
+    if (self.player == 0 and game_state != 'END' and len(draw_list) > 1):
+      draw_list[0] = 'H'
     for idx, card in enumerate(draw_list):
       screen.blit(deck.get_card(card), (self.location[0] + idx * 70, self.location[1] + idx * 10))
     # DRAW BET
@@ -98,9 +103,13 @@ class Player:
   def stay(self):
     pass
 
-  def do_game_end(self, dealer):
+  def do_game_end(self, dealer, deck):
     if self.player == 0:
       return
+    dealer_total = Player.get_card_total(dealer.cards)
+    while dealer_total < 17:
+      dealer.draw_single(deck)
+      dealer_total = Player.get_card_total(dealer.cards)
     won_points = self.check_win_condition(dealer.cards, 'END')
     dealer.points -= won_points
 
@@ -126,17 +135,17 @@ class Player:
       self.bet_amount = 0
       self.player_state = 'DRAW'
       return won_points
+    if dealer_total < player_total or dealer_total > 21:
+      won_points = self.bet_amount
+      self.points += won_points
+      self.bet_amount = 0
+      self.player_state = 'WON'
+      return won_points
     if dealer_total > player_total:
       won_points = -self.bet_amount
       self.points = won_points
       self.bet_amount = 0
       self.player_state = 'LOSS'
-      return won_points
-    if dealer_total < player_total:
-      won_points = self.bet_amount
-      self.points += won_points
-      self.bet_amount = 0
-      self.player_state = 'WON'
       return won_points
     return 0
   
@@ -159,7 +168,6 @@ class Player:
       if total <= 21:
         return total
       total -= 10
-    print(cards, total)
     return total
 
 
