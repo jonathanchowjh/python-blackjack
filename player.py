@@ -67,8 +67,20 @@ class Player:
       if 'button_rect' not in button.keys():
         return ''
       if button['button_rect'].collidepoint(event.pos):
-        if button['key'] == 'bet':
-          self.bet()
+        if button['key'] == 'bet_5':
+          self.bet(5)
+          self.remove_buttons()
+          return 'bet'
+        if button['key'] == 'bet_10':
+          self.bet(10)
+          self.remove_buttons()
+          return 'bet'
+        if button['key'] == 'bet_30':
+          self.bet(30)
+          self.remove_buttons()
+          return 'bet'
+        if button['key'] == 'bet_100':
+          self.bet(100)
           self.remove_buttons()
           return 'bet'
         if button['key'] == 'hit':
@@ -90,8 +102,8 @@ class Player:
   def remove_buttons(self):
     self.active_buttons = []
 
-  def bet(self):
-    self.bet_amount += 10
+  def bet(self, amount):
+    self.bet_amount += amount
 
   def hit(self, deck: Deck, dealer):
     draw = deck.draw(1)

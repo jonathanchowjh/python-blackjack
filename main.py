@@ -75,7 +75,10 @@ class App:
       self.game_player += 1
       player = App.first(x for x in self.players if x.player == self.game_player)
       if self.game_state == 'BET':
-        player.add_button('Bet 10', 'bet')
+        player.add_button('Bet 5', 'bet_5')
+        player.add_button('Bet 10', 'bet_10')
+        player.add_button('Bet 30', 'bet_30')
+        player.add_button('Bet 100', 'bet_100')
       elif player.player_state != 'PLAYING':
         self.next_turn('next_player')
       elif self.game_state == 'DRAW':
